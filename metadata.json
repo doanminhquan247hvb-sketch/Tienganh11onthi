@@ -1,0 +1,6 @@
+{
+  "name": "English Master 11 - Ôn Thi Tiếng Anh Lớp 11 Global Success",
+  "description": "Ứng dụng ôn thi Tiếng Anh 11 chuẩn Global Success dành cho học sinh THPT với gia sư AI, đề thi thử giữa kì & cuối kì, ngân hàng câu hỏi và cổng theo dõi phụ huynh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

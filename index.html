@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Compatibility shim for browser extensions that assign to window.fetch
+      try {
+        const _origFetch = window.fetch;
+        let _currentFetch = _origFetch;
+        Object.defineProperty(window, 'fetch', {
+          get() {
+            return _currentFetch;
+          },
+          set(fn) {
+            _currentFetch = fn;
+          },
+          configurable: true,
+          enumerable: true,
+        });
+      } catch (err) {}
+      window.addEventListener('error', function(e) {
+        if (e && e.message && e.message.includes('fetch of #<Window> which has only a getter')) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
+    </script>
+    <title>English Master 11 - Ôn Thi Tiếng Anh Lớp 11 Global Success</title>
+    <meta name="description" content="Ứng dụng ôn thi Tiếng Anh 11 chuẩn Global Success dành cho học sinh THPT với gia sư AI, đề thi thử giữa kì & cuối kì, ngân hàng câu hỏi và cổng theo dõi phụ huynh." />
+    <meta property="og:title" content="English Master 11 - Ôn Thi Tiếng Anh Lớp 11 Global Success" />
+    <meta property="og:description" content="Ứng dụng ôn thi Tiếng Anh 11 chuẩn Global Success dành cho học sinh THPT với gia sư AI, đề thi thử giữa kì & cuối kì, ngân hàng câu hỏi và cổng theo dõi phụ huynh." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
