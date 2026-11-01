@@ -94,26 +94,12 @@ export default function App() {
     if (presetId === 'exam-midterm-1') {
       const pool = getStoredQuestionBank();
       const randomizedMidterm = generateRandomizedMidtermExam(pool);
-      handleStartExam(
-        'Đề thi thử học kì I (Chuẩn 40 câu ma trận - Ngẫu nhiên 100%)',
-        randomizedMidterm.questions,
-        45,
-        '40 câu ngẫu nhiên 100% | 45 phút | 30 Trắc nghiệm (7.5đ) + 4 Chia thì (1.0đ) + 4 Word Form (1.0đ) + 2 Modal Verbs (0.5đ)',
-        'combined',
-        randomizedMidterm.examCode
-      );
+      handleStartExam(         'Đề thi thử học kì I (Chuẩn 40 câu ma trận - Ngẫu nhiên 100%)',         randomizedMidterm.questions,         45,         '40 câu ngẫu nhiên 100% | 45 phút | 30 Trắc nghiệm (7.5đ) + 4 Chia thì (1.0đ) + 4 Word Form (1.0đ) + 2 Modal Verbs (0.5đ)',         'combined',         randomizedMidterm.examCode       );
       return;
     }
 
     if (presetId === 'exam-wordform-8') {
-      handleStartExam(
-        'Bài kiểm tra 8 từ Word Form (Danh - Động - Tính - Trạng)',
-        WORD_FORM_QUIZ_QUESTIONS,
-        15,
-        '8 câu Word Form trọng tâm | 15 phút',
-        'word_form',
-        'ENG-WF-8WORDS'
-      );
+      handleStartExam(         'Bài kiểm tra 8 từ Word Form (Danh - Động - Tính - Trạng)',         WORD_FORM_QUIZ_QUESTIONS,         15,         '8 câu Word Form trọng tâm | 15 phút',         'word_form',         'ENG-WF-8WORDS'       );
       return;
     }
 
@@ -163,12 +149,7 @@ export default function App() {
   };
 
   const handleRemediateMistakes = (wrongQuestions: Question[]) => {
-    handleStartExam(
-      `Bài luyện tập khắc phục ${wrongQuestions.length} câu làm sai`,
-      wrongQuestions,
-      Math.max(10, Math.ceil(wrongQuestions.length * 1.5)),
-      `Đề luyện câu sai | ${wrongQuestions.length} câu`
-    );
+    handleStartExam(       `Bài luyện tập khắc phục ${wrongQuestions.length} câu làm sai`,       wrongQuestions,       Math.max(10, Math.ceil(wrongQuestions.length * 1.5)),       `Đề luyện câu sai | ${wrongQuestions.length} câu`     );
   };
 
   const handleResetData = () => {
@@ -179,7 +160,6 @@ export default function App() {
     setCurrentTab('dashboard');
   };
 
-  // If in an active exam, render the full-screen exam runner
   if (activeExam?.isActive) {
     return (
       <ExamRunner
@@ -193,7 +173,6 @@ export default function App() {
     );
   }
 
-  // If viewing exam result
   if (activeResult) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -218,20 +197,11 @@ export default function App() {
           <ExamResultView
             submission={activeResult}
             onRetakeExam={() => {
-              const isMidterm =
-                activeResult.examTitle.toLowerCase().includes('giữa kỉ') ||
-                activeResult.totalQuestions === 40;
+              const isMidterm =                 activeResult.examTitle.toLowerCase().includes('giữa kỉ') ||                 activeResult.totalQuestions === 40;
               if (isMidterm) {
                 const pool = getStoredQuestionBank();
                 const randomizedMidterm = generateRandomizedMidtermExam(pool);
-                handleStartExam(
-                  'Đề thi thử học kì I (Chuẩn 40 câu ma trận - Ngẫu nhiên 100%)',
-                  randomizedMidterm.questions,
-                  45,
-                  '40 câu ngẫu nhiên 100% | 45 phút | 30 Trắc nghiệm (7.5đ) + 4 Chia thì (1.0đ) + 4 Word Form (1.0đ) + 2 Modal Verbs (0.5đ)',
-                  'combined',
-                  randomizedMidterm.examCode
-                );
+                handleStartExam(                   'Đề thi thử học kì I (Chuẩn 40 câu ma trận - Ngẫu nhiên 100%)',                   randomizedMidterm.questions,                   45,                   '40 câu ngẫu nhiên 100% | 45 phút | 30 Trắc nghiệm (7.5đ) + 4 Chia thì (1.0đ) + 4 Word Form (1.0đ) + 2 Modal Verbs (0.5đ)',                   'combined',                   randomizedMidterm.examCode                 );
               } else {
                 handleStartExam(
                   activeResult.examTitle,
@@ -256,16 +226,91 @@ export default function App() {
 
   return (
     <div className={`min-h-screen flex flex-col font-sans text-gray-900 relative ${isWallpaperActive ? 'bg-slate-950' : 'bg-slate-50'}`}>
-      {/* Background Wallpaper with 5% opacity overlay */}
       {isWallpaperActive && (         <div className="fixed inset-0 pointer-events-none z-0">
           <img
             src={themeSettings.wallpaperUrl}
             alt="Theme Wallpaper"
             className="w-full h-full object-cover"
           />
-          {/* Mờ 5% lớp phủ nền */}
           <div className="absolute inset-0 bg-slate-950/5 backdrop-blur-[1px]" />
         </div>
       )}
 
       <Navbar
+        currentTab={currentTab}
+        onSelectTab={(tab) => {
+          if (tab === 'parent') setIsParentMode(true);
+          else setIsParentMode(false);
+          setCurrentTab(tab);
+        }}
+profile={profile}
+isParentMode={isParentMode}
+onToggleParentMode={(isParent) => {
+setIsParentMode(isParent);
+if (isParent) setCurrentTab('parent');
+else setCurrentTab('dashboard');
+}}
+onResetData={handleResetData}
+onOpenThemeModal={() => setIsThemeModalOpen(true)}
+/>
+{currentTab === 'dashboard' && (
+<StudyDashboard
+profile={profile}
+recentSubmissions={submissions}
+onNavigateTab={(tab) => setCurrentTab(tab)}
+onStartExam={handlePresetExamLaunch}
+/>
+)}
+{currentTab === 'exam_generator' && (
+
+)}
+{currentTab === 'question_bank' && (
+
+)}
+{currentTab === 'word_form' && (
+<WordFormHub
+onStartWordFormExam={(qs) => {
+handleStartExam(                 'Bài kiểm tra 8 từ Word Form (Danh - Động - Tính - Trạng)',                 qs,                 15,                 'Bài kiểm tra 8 từ Word Form tổng lực | 15 phút'               );
+}}
+/>
+)}
+{currentTab === 'units' && (
+<UnitsMatrix
+onStartUnitExam={(unitNum, title, questions) => {
+handleStartExam(title, questions, 15, Kiểm tra Unit ${unitNum});
+}}
+onOpenVocabulary={() => setCurrentTab('vocabulary')}
+onOpenGrammar={() => setCurrentTab('grammar')}
+/>
+)}
+{currentTab === 'vocabulary' && }
+{currentTab === 'grammar' && }
+{currentTab === 'ai_tutor' && }
+{currentTab === 'minigame' && (
+
+)}
+{currentTab === 'iq_arena' && (
+
+)}
+{currentTab === 'mistakes' && (
+
+)}
+{currentTab === 'parent' && (
+
+)}
+English Master 11
+ 
+Học & Ôn Thi Tiếng Anh THPT Global Success
+
+
+Chương trình biên soạn chuẩn theo sách giáo khoa Tiếng Anh 11 Global Success của Nhà xuất bản Giáo dục Việt Nam. Tích hợp Gia sư AI đồng hành cho Học sinh & Cổng theo dõi cho Phụ huynh.
+
+<ThemeCustomizerModal
+isOpen={isThemeModalOpen}
+onClose={() => setIsThemeModalOpen(false)}
+currentSettings={themeSettings}
+onUpdateSettings={(newSettings) => setThemeSettings(newSettings)}
+/>
+
+);
+}
